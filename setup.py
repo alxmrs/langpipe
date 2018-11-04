@@ -17,6 +17,7 @@ entry_points = """
 # script_name = langpipe.module:function
 # For example:
 # fibonacci = langpipe.skeleton:run
+langpipe = langpipe.langpipe:cli
 """
 
 
