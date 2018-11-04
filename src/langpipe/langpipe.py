@@ -167,15 +167,15 @@ def filter_pos_cmd(words: types.Words, pos: typing.List[str]):
 
 
 @cli.command('filter-length-gte')
-@click.option('-m', '--min', type=int, help='Minimum length that values need to be.')
+@click.option('-n', '--num', type=int, help='Minimum length that values need to be.')
 @types.processor
-def filter_max_length_cmd(items: typing.Iterator[typing.AnyStr], min: int):
+def filter_max_length_cmd(items: typing.Iterator[typing.AnyStr], num: int):
     try:
         for item in items:
-            if len(item) >= min:
+            if len(item) >= num:
                 yield item
     except Exception as e:
-        click.echo('Problem filtering input for items less than max of (%d). %s' % (min, e), err=True)
+        click.echo('Problem filtering input for items less than max of (%d). %s' % (num, e), err=True)
 
 
 @cli.command('remove-stopwords')
