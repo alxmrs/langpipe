@@ -9,10 +9,12 @@ from langpipe import types
 
 @click.group(chain=True)
 def cli():
-    """This script processes a bunch of images through pillow in a unix
-    pipe.  One commands feeds into the next.
+    """This script processes textfiles through the nltk and similar packages in a unix pipe.
+     One commands feeds into the next.
+
     Example:
-        TBD
+
+        langpipe  readlines -f ../data_source.txt words remove-stopwords -f stop_words.txt trace
     """
     pass
 
