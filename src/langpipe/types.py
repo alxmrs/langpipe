@@ -1,6 +1,8 @@
 from functools import update_wrapper
 import typing
 
+import click
+
 
 def processor(f):
     """Helper decorator to rewrite a function so that it returns another
@@ -26,5 +28,40 @@ def generator(f):
     return update_wrapper(new_func, f)
 
 
+class MutuallyExclusiveOption(click.Option):
+    def __init__(self, *args, **kwargs):
+        self.mutually_exclusive = set(kwargs.pop('mutually_exclusive', []))
+        help = kwargs.get('help', '')
+        if self.mutually_exclusive:
+            ex_str = ', '.join(self.mutually_exclusive)
+            kwargs['help'] = help + (
+                ' NOTE: This argument is mutually exclusive with '
+                ' arguments: [' + ex_str + '].'
+            )
+        super(MutuallyExclusiveOption, self).__init__(*args, **kwargs)
+
+    def handle_parse_result(self, ctx, opts, args):
+        if self.mutually_exclusive.intersection(opts) and self.name in opts:
+            raise click.UsageError(
+                "Illegal usage: `{}` is mutually exclusive with "
+                "arguments `{}`.".format(
+                    self.name,
+                    ', '.join(self.mutually_exclusive)
+                )
+            )
+
+        return super(MutuallyExclusiveOption, self).handle_parse_result(
+            ctx,
+            opts,
+            args
+        )
+
+
 Line = typing.NewType('Line', str)
 Lines = typing.Iterator[Line]
+
+Sentence = typing.NewType('Sentence', str)
+Sentences = typing.Iterator[Sentence]
+
+Word = typing.NewType('Word', str)
+Words = typing.Iterator[Word]
