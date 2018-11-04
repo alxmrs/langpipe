@@ -74,7 +74,10 @@ def trace_cmd(lines: typing.Iterator) -> typing.Iterator:
 @types.processor
 def sentence_tokenize_cmd(lines: types.Lines, language: str) -> types.Sentences:
     """Tokenizes lines into sentences. Downloads nltk resources if they don't exist."""
-    nltk.download('punkt')
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
 
     line = ''
     try:
@@ -90,7 +93,10 @@ def sentence_tokenize_cmd(lines: types.Lines, language: str) -> types.Sentences:
 @types.processor
 def word_tokenize_cmd(lines: types.Lines, language: str) -> types.Words:
     """Tokenizes lines into words. Downloads nltk resources if they don't exist."""
-    nltk.download('punkt')
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
 
     line = ''
     try:
@@ -137,3 +143,56 @@ def replace_cmd(lines: typing.Iterator[typing.AnyStr],
             yield line
     except Exception as e:
         click.echo('Could not apply replacement "%s" --> "%s" on line "%s": %s' % (src, dst, line, e), err=True)
+
+
+@cli.command('filter-pos')
+@click.option('-p', '--pos', 'pos', type=str,
+              multiple=True, help='Part-of-speech to allow to pass through. Can specify multiple at once.')
+@types.processor
+def filter_pos_cmd(words: types.Words, pos: typing.List[str]):
+
+    try:
+        nltk.data.find('taggers/averaged_perceptron_tagger')
+    except LookupError:
+        nltk.download('averaged_perceptron_tagger')
+
+    parts_of_speech = set(pos)
+    try:
+        for word, pos_ in nltk.pos_tag(words):
+            if pos_ in parts_of_speech:
+                yield word
+    except Exception as e:
+        click.echo('Problem filtering input by part of speech. %s' % e, err=True)
+
+
+@cli.command('filter-length-gte')
+@click.option('-m', '--min', type=int, help='Minimum length that values need to be.')
+@types.processor
+def filter_max_length_cmd(items: typing.Iterator[typing.AnyStr], min: int):
+    try:
+        for item in items:
+            if len(item) >= min:
+                yield item
+    except Exception as e:
+        click.echo('Problem filtering input for items less than max of (%d). %s' % (min, e), err=True)
+
+
+@cli.command('remove-stopwords')
+@click.option('-f', '--file', type=click.Path(), help='path/to/stopwords/file.txt. One stop-word per line.')
+@types.processor
+def remove_stopwords(words: types.Words, file: str) -> types.Words:
+    try:
+        stopwords = set()
+        with open(file, 'r') as stopwords_file:
+            for line in stopwords_file:
+                swds = line.split()
+                for sw in swds:
+                    stopwords.add(sw.lower().strip())
+
+        for word in words:
+            w_lowered = word.lower()
+            if w_lowered not in stopwords:
+                yield word
+
+    except Exception as e:
+        click.echo('Problem removing stopwords from stream of words. %s' % e, err=True)
