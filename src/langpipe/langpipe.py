@@ -1,5 +1,6 @@
-import typing
 import csv
+import typing
+
 import click
 import nltk
 
@@ -112,9 +113,9 @@ def word_tokenize_cmd(lines: types.Lines, language: str) -> types.Words:
               type=click.Path(), help='File of substitutions in CSV format')
 @types.processor
 def replace_cmd(lines: typing.Iterator[typing.AnyStr],
-                      source: typing.Optional[str] = None,
-                      dest: typing.Optional[str] = None,
-                      file: typing.Optional = None) -> typing.Iterator[typing.AnyStr]:
+                source: typing.Optional[str] = None,
+                dest: typing.Optional[str] = None,
+                file: typing.Optional = None) -> typing.Iterator[typing.AnyStr]:
     """Replaces all instances of a string or regex pattern in each input"""
 
     replacements = []
@@ -128,12 +129,11 @@ def replace_cmd(lines: typing.Iterator[typing.AnyStr],
             csvfile.seek(0)
             replacements += list(csv.reader(csvfile, dialect=dialect))
 
-    src, dst = '', ''
+    src, dst, line = '', '', ''
     try:
         for line in lines:
-                for src, dst in replacements:
-                    line = line.replace(src, dst)
-                yield line
+            for src, dst in replacements:
+                line = line.replace(src, dst)
+            yield line
     except Exception as e:
         click.echo('Could not apply replacement "%s" --> "%s" on line "%s": %s' % (src, dst, line, e), err=True)
-
