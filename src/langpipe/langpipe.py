@@ -158,7 +158,8 @@ def filter_pos_cmd(words: types.Words, pos: typing.List[str]):
 
     parts_of_speech = set(pos)
     try:
-        for word, pos_ in nltk.pos_tag(words):
+        for word in words:
+            wd, pos_ = nltk.pos_tag([word])[0]
             if pos_ in parts_of_speech:
                 yield word
     except Exception as e:
