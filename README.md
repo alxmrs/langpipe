@@ -5,7 +5,7 @@ A CLI for natural language processing via unix-like pipes.
 
 # Description
 
-Preprocessing a corpus of transcripts, for example, is as easy as: 
+Getting all the nouns from a corpus of transcripts, for example, is as easy as: 
 
 ```bash
 
