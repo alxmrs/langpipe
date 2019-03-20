@@ -36,6 +36,7 @@ Commands and subcommands can be composable, modular, and flexible.
 
 ### `langpipe --help`
 ```
+
 Usage: langpipe [OPTIONS] COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...
 
   This script processes textfiles through the nltk and similar packages in a
@@ -61,7 +62,8 @@ Commands:
 ```
 
 ### `langpipe readlines --help`
-```Usage: langpipe readlines [OPTIONS]
+```
+Usage: langpipe readlines [OPTIONS]
 
   Loads all the lines for one or more files. The input parameter can be
   specified multiple items to load more than one text file.
@@ -72,7 +74,8 @@ Options:
 ```
 
 ### `langpipe trace --help`
-```Usage: langpipe trace [OPTIONS]
+```
+Usage: langpipe trace [OPTIONS]
 
   Writes input to stdin.
 
@@ -81,7 +84,8 @@ Options:
 ```
 
 ### `langpipe sentences --help`
-```Usage: langpipe sentences [OPTIONS]
+```
+Usage: langpipe sentences [OPTIONS]
 
   Tokenizes lines into sentences. Downloads nltk resources if they don't
   exist.
@@ -92,7 +96,8 @@ Options:
 ```
 
 ### `langpipe words --help`
-```Usage: langpipe words [OPTIONS]
+```
+Usage: langpipe words [OPTIONS]
 
   Tokenizes lines into words. Downloads nltk resources if they don't exist.
 
@@ -102,7 +107,8 @@ Options:
 ```
 
 ### `langpipe replace --help`
-```Usage: langpipe replace [OPTIONS]
+```
+Usage: langpipe replace [OPTIONS]
 
   Replaces all instances of a string or regex pattern in each input
 
@@ -120,7 +126,8 @@ Options:
 ```
 
 ### `langpipe remove-stopwords --help`
-```Usage: langpipe remove-stopwords [OPTIONS]
+```
+Usage: langpipe remove-stopwords [OPTIONS]
 
 Options:
   -f, --file PATH  path/to/stopwords/file.txt. One stop-word per line.
@@ -128,7 +135,8 @@ Options:
 ```
 ### `langpipe filter-pos --help`
 WIP
-```Usage: langpipe filter-pos [OPTIONS]
+```
+Usage: langpipe filter-pos [OPTIONS]
 
 Options:
   -p, --pos TEXT  Part-of-speech to allow to pass through. Can specify
@@ -138,7 +146,8 @@ Options:
 
 ### `langpipe filter-length-gte --help`
 WIP
-```Usage: langpipe filter-length-gte [OPTIONS]
+```
+Usage: langpipe filter-length-gte [OPTIONS]
 
 Options:
   -n, --num INTEGER  Minimum length that values need to be.
